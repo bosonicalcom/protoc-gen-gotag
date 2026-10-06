@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/fatih/structtag"
@@ -60,6 +61,36 @@ func TestRetag(t *testing.T) {
 
 	if !bytes.Equal(out, buf.Bytes()) {
 		t.Error("output does not match golden file")
+	}
+}
+
+func TestRetagOpaque(t *testing.T) {
+	const src = `package main
+
+type Opaque struct {
+	xxx_hidden_Tagged   string ` + "`" + `protobuf:"bytes,1,opt,name=tagged"` + "`" + `
+	xxx_hidden_Untagged string ` + "`" + `protobuf:"bytes,2,opt,name=untagged"` + "`" + `
+}
+`
+
+	fs := token.NewFileSet()
+	n, err := parser.ParseFile(fs, "opaque.go", src, parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Fields without any tags to apply must not trip the opaque check.
+	if err := module.Retag(n, map[string]map[string]*structtag.Tags{
+		"Opaque": {"Untagged": tagMust(structtag.Parse(``))},
+	}); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	err = module.Retag(n, map[string]map[string]*structtag.Tags{
+		"Opaque": {"Tagged": tagMust(structtag.Parse(`json:"tagged"`))},
+	})
+	if err == nil || !strings.Contains(err.Error(), "API_OPEN") {
+		t.Fatalf("expected opaque API error, got: %v", err)
 	}
 }
 

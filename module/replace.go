@@ -1,6 +1,7 @@
 package module
 
 import (
+	"fmt"
 	"go/ast"
 	"go/token"
 	"sort"
@@ -10,6 +11,10 @@ import (
 )
 
 type StructTags map[string]map[string]*structtag.Tags
+
+// opaquePrefix is prepended by protoc-gen-go to the unexported fields of messages
+// generated with the Opaque API (the default from edition 2024 onwards).
+const opaquePrefix = "xxx_hidden_"
 
 func (s StructTags) AddTagsToXXXFields(tags *structtag.Tags) {
 	xtags := map[string]*structtag.Tags{
@@ -32,14 +37,15 @@ func (s StructTags) AddTagsToXXXFields(tags *structtag.Tags) {
 // Retag updates the existing tags with the map passed and modifies existing tags if any of the keys are matched.
 // First key to the tags argument is the name of the struct, the second key corresponds to field names.
 func Retag(n ast.Node, tags StructTags) error {
-	r := retag{}
+	r := &retag{}
 	f := func(n ast.Node) ast.Visitor {
 		if r.err != nil {
 			return nil
 		}
 
 		if tp, ok := n.(*ast.TypeSpec); ok {
-			r.tags = tags[tp.Name.String()]
+			r.name = tp.Name.String()
+			r.tags = tags[r.name]
 			return r
 		}
 
@@ -58,7 +64,9 @@ type structVisitor struct {
 func (v structVisitor) Visit(n ast.Node) ast.Visitor {
 	if tp, ok := n.(*ast.TypeSpec); ok {
 		if _, ok := tp.Type.(*ast.StructType); ok {
-			ast.Walk(v.visitor(n), n)
+			if sv := v.visitor(n); sv != nil {
+				ast.Walk(sv, n)
+			}
 			return nil // This will ensure this struct is no longer traversed
 		}
 	}
@@ -67,10 +75,11 @@ func (v structVisitor) Visit(n ast.Node) ast.Visitor {
 
 type retag struct {
 	err  error
+	name string
 	tags map[string]*structtag.Tags
 }
 
-func (v retag) Visit(n ast.Node) ast.Visitor {
+func (v *retag) Visit(n ast.Node) ast.Visitor {
 	if v.err != nil {
 		return nil
 	}
@@ -79,7 +88,14 @@ func (v retag) Visit(n ast.Node) ast.Visitor {
 		if len(f.Names) == 0 {
 			return nil
 		}
-		newTags := v.tags[f.Names[0].String()]
+		name := f.Names[0].String()
+		if t := v.tags[strings.TrimPrefix(name, opaquePrefix)]; strings.HasPrefix(name, opaquePrefix) && t != nil && t.Len() > 0 {
+			v.err = fmt.Errorf("message %s uses the Opaque Go API (field %s); gotag cannot tag unexported fields. "+
+				"Set option features.(pb.go).api_level = API_OPEN (or API_HYBRID) for this file/message", v.name, name)
+			return nil
+		}
+
+		newTags := v.tags[name]
 		if newTags == nil {
 			return nil
 		}
