@@ -88,6 +88,39 @@ protoc -I /usr/local/include \
     --gotag_out=xxx="graphql+\"-\" bson+\"-\"":. example/example.proto
 ```
 
+## Protobuf Editions
+
+Files using `edition = "2023"` and `edition = "2024"` are supported in addition to `proto2` and `proto3`. Tags are declared exactly the same way:
+
+```proto
+edition = "2023";
+
+package example;
+
+import "tagger/tagger.proto";
+
+message Example {
+    string with_new_tags = 1 [(tagger.tags) = "graphql:\"withNewTags,optional\""];
+}
+```
+
+Starting with edition 2024, `protoc-gen-go` generates messages with the [Opaque API](https://go.dev/blog/protobuf-opaque) by default, where struct fields are unexported (`xxx_hidden_*`). Most tag based libraries (`encoding/json`, `bson`, `gorm`, ...) ignore unexported fields, so gotag fails with an error when asked to tag an opaque message. Use the Open (or Hybrid) API for files that need custom tags:
+
+```proto
+edition = "2024";
+
+package example;
+
+import "tagger/tagger.proto";
+import option "google/protobuf/go_features.proto";
+
+option features.(pb.go).api_level = API_OPEN;
+```
+
+With `API_HYBRID` only the default build (`.pb.go`) is tagged; the `_protoopaque.pb.go` variant is left untouched.
+
+See [example/editions2023](example/editions2023) and [example/editions2024](example/editions2024) for complete examples.
+
 ## Output to a directory other than the current directory
 
 When outputting to a directory other than the current directory, you will need to pass the output path twice using
