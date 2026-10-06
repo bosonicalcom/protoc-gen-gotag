@@ -4,7 +4,7 @@ package example.editions2023;
 
 import "tagger/tagger.proto";
 
-option go_package = "github.com/srikrsna/protoc-gen-gotag/example/editions2023";
+option go_package = "github.com/bosonicalcom/protoc-gen-gotag/example/editions2023";
 
 message Example {
     string with_new_tags = 1 [(tagger.tags) = "graphql:\"withNewTags,optional\"" ];

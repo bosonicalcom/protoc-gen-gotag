@@ -7,7 +7,7 @@
 package editions2023
 
 import (
-	_ "github.com/srikrsna/protoc-gen-gotag/tagger"
+	_ "github.com/bosonicalcom/protoc-gen-gotag/tagger"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -250,7 +250,7 @@ const file_example_editions2023_editions2023_proto_rawDesc = "" +
 	"\fInnerExample\x12\x1f\n" +
 	"\x02id\x18\x01 \x01(\tB\x0f\x9a\x84\x9e\x03\n" +
 	"json:\"yes\"R\x02id\x12 \n" +
-	"\x03yes\x18\x02 \x01(\x05B\x0e\x9a\x84\x9e\x03\tjson:\"id\"R\x03yesB;Z9github.com/srikrsna/protoc-gen-gotag/example/editions2023b\beditionsp\xe8\a"
+	"\x03yes\x18\x02 \x01(\x05B\x0e\x9a\x84\x9e\x03\tjson:\"id\"R\x03yesB?Z=github.com/bosonicalcom/protoc-gen-gotag/example/editions2023b\beditionsp\xe8\a"
 
 var (
 	file_example_editions2023_editions2023_proto_rawDescOnce sync.Once

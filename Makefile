@@ -7,7 +7,7 @@ EDITIONS_PROTOS = example/editions2023/editions2023.proto example/editions2024/e
 example: proto install
 	protoc -I ${PROTOC_INCLUDE} \
 	-I ${LOCAL_PATH} \
-	--gotag_out=xxx="graphql+\"-\" bson+\"-\"":. example/example.proto
+	--gotag_out=paths=source_relative,xxx="graphql+\"-\" bson+\"-\"":. example/example.proto
 	protoc -I ${PROTOC_INCLUDE} \
 	-I ${LOCAL_PATH} \
 	--gotag_out=paths=source_relative:. ${EDITIONS_PROTOS}
@@ -15,7 +15,7 @@ example: proto install
 proto:
 	protoc -I ${PROTOC_INCLUDE} \
 	-I ${LOCAL_PATH} \
-	--go_out=:. example/example.proto
+	--go_out=paths=source_relative:. example/example.proto
 	protoc -I ${PROTOC_INCLUDE} \
 	-I ${LOCAL_PATH} \
 	--go_out=paths=source_relative:. ${EDITIONS_PROTOS}
