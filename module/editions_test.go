@@ -13,7 +13,7 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	"github.com/srikrsna/protoc-gen-gotag/module"
+	"github.com/bosonicalcom/protoc-gen-gotag/module"
 )
 
 // TestEditions runs gotag against the untagged protoc-gen-go output in testdata

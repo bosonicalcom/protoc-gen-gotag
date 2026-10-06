@@ -5,7 +5,7 @@ package example.editions2024;
 import "tagger/tagger.proto";
 import option "google/protobuf/go_features.proto";
 
-option go_package = "github.com/srikrsna/protoc-gen-gotag/example/editions2024";
+option go_package = "github.com/bosonicalcom/protoc-gen-gotag/example/editions2024";
 
 // gotag can only tag exported struct fields, so the Open (or Hybrid) Go API is required.
 option features.(pb.go).api_level = API_OPEN;

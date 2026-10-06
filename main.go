@@ -9,7 +9,7 @@ import (
 	pgsgo "github.com/lyft/protoc-gen-star/v2/lang/go"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	"github.com/srikrsna/protoc-gen-gotag/module"
+	"github.com/bosonicalcom/protoc-gen-gotag/module"
 )
 
 func main() {

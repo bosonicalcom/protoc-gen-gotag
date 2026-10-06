@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	"github.com/srikrsna/protoc-gen-gotag/module"
+	"github.com/bosonicalcom/protoc-gen-gotag/module"
 )
 
 func TestExtract(t *testing.T) {

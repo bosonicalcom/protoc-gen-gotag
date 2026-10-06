@@ -7,7 +7,7 @@ The project maintenance and evolution has been embraced by [@ucpr](https://githu
 Get  it using 
 
 ```
-go install github.com/srikrsna/protoc-gen-gotag@latest
+go install github.com/bosonicalcom/protoc-gen-gotag@latest
 ```
 
 It supports the following features,

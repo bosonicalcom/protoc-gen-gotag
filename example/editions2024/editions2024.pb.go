@@ -7,7 +7,7 @@
 package editions2024
 
 import (
-	_ "github.com/srikrsna/protoc-gen-gotag/tagger"
+	_ "github.com/bosonicalcom/protoc-gen-gotag/tagger"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -250,7 +250,7 @@ const file_example_editions2024_editions2024_proto_rawDesc = "" +
 	"\fInnerExample\x12\x1f\n" +
 	"\x02id\x18\x01 \x01(\tB\x0f\x9a\x84\x9e\x03\n" +
 	"json:\"yes\"R\x02id\x12 \n" +
-	"\x03yes\x18\x02 \x01(\x05B\x0e\x9a\x84\x9e\x03\tjson:\"id\"R\x03yesBCZ9github.com/srikrsna/protoc-gen-gotag/example/editions2024\x92\x03\x05\xd2>\x02\x10\x01b\beditionsp\xe9\az!google/protobuf/go_features.proto"
+	"\x03yes\x18\x02 \x01(\x05B\x0e\x9a\x84\x9e\x03\tjson:\"id\"R\x03yesBGZ=github.com/bosonicalcom/protoc-gen-gotag/example/editions2024\x92\x03\x05\xd2>\x02\x10\x01b\beditionsp\xe9\az!google/protobuf/go_features.proto"
 
 var (
 	file_example_editions2024_editions2024_proto_rawDescOnce sync.Once
